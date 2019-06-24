@@ -4,11 +4,13 @@ module Action = struct
   type ident =
     [ `star
     | `string of string
-    | `one_of of Set.M(String).t ]
+    | `one_of of Set.M(String).t
+    ]
 
   type t =
     [ `descendants of ident (* All descendants matching [ident] *)
-    | `children of ident (* All direct children matching [ident] *) ]
+    | `children of ident (* All direct children matching [ident] *)
+    ]
 end
 
 module Eval = struct
@@ -19,8 +21,7 @@ module Eval = struct
   ;;
 
   let rec descendants name : Sexp.t -> _ = function
-    | List [ Atom key; value ]
-      when matches key name -> value :: descendants name value
+    | List [ Atom key; value ] when matches key name -> value :: descendants name value
     | List l -> List.bind l ~f:(descendants name)
     | Atom _ -> []
   ;;
@@ -30,8 +31,7 @@ module Eval = struct
     | List l ->
       List.filter_map l ~f:(function
         | List [ Atom key; value ] -> if matches key name then Some value else None
-        | List ([] | [ _ ] | [ List _; _ ] | _ :: _ :: _ :: _)
-        | Atom _ -> None)
+        | List ([] | [ _ ] | [ List _; _ ] | _ :: _ :: _ :: _) | Atom _ -> None)
   ;;
 end
 
