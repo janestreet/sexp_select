@@ -79,12 +79,20 @@ module Parse = struct
   ;;
 end
 
+let select_staged program_string =
+  let actions = Parse.parse program_string in
+  Staged.stage (fun sexp ->
+    let rec loop actions sexp =
+      match (actions : Action.t list) with
+      | [] -> [ sexp ]
+      | `descendants ident :: rest ->
+        List.bind (Eval.descendants ident sexp) ~f:(loop rest)
+      | `children ident :: rest -> List.bind (Eval.children ident sexp) ~f:(loop rest)
+    in
+    loop actions sexp)
+;;
+
 let select program_string sexp =
-  let rec loop actions sexp =
-    match (actions : Action.t list) with
-    | [] -> [ sexp ]
-    | `descendants ident :: rest -> List.bind (Eval.descendants ident sexp) ~f:(loop rest)
-    | `children ident :: rest -> List.bind (Eval.children ident sexp) ~f:(loop rest)
-  in
-  loop (Parse.parse program_string) sexp
+  let select_fn = Staged.unstage (select_staged program_string) in
+  select_fn sexp
 ;;
