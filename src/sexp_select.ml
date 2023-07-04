@@ -96,3 +96,5 @@ let select program_string sexp =
   let select_fn = Staged.unstage (select_staged program_string) in
   select_fn sexp
 ;;
+
+let select_single_exn label sexp = select label sexp |> List.hd_exn
