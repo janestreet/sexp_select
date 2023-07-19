@@ -98,3 +98,38 @@ let select program_string sexp =
 ;;
 
 let select_single_exn label sexp = select label sexp |> List.hd_exn
+
+(* Produce a table that looks like this:
+
+   {v
+     program1        -> [ (first output); second_output ]
+     another program -> [ output ]
+     third > program -> [ (some very long output);
+                          and_another_output ]
+   v}
+
+   where the left side is the programs passed in, and the right side is the outputs
+   of running [select] on the input sexp.
+*)
+let format_program_outputs sexp programs =
+  let max_program_width =
+    List.fold programs ~init:0 ~f:(fun prev_max program ->
+      Int.max (String.length program) prev_max)
+  in
+  let pad s = s ^ String.make (max_program_width - String.length s) ' ' in
+  let output_padding = String.make (max_program_width + String.length " -> [ ") ' ' in
+  List.map programs ~f:(fun program ->
+    let output = select program sexp |> List.map ~f:Sexp.to_string_mach in
+    let output_str =
+      let one_line = String.concat ~sep:"; " output in
+      if String.length one_line <= 40
+      then one_line
+      else
+        (match output with
+         | [] -> assert false
+         | head :: tail -> head :: List.map tail ~f:(fun s -> output_padding ^ s))
+        |> String.concat ~sep:";\n"
+    in
+    Printf.sprintf "%s -> [ %s ]" (pad program) output_str)
+  |> String.concat ~sep:"\n"
+;;
