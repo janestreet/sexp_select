@@ -56,3 +56,55 @@ let%expect_test "select" =
                               ((grizzle((one z)(two y)))(drizzle chizzle)) ]
     wizzle > *           -> [ a; b; c; ((one z)(two y)); chizzle ] |}]
 ;;
+
+let%expect_test "weird edge cases" =
+  let sexp1 = Parsexp.Single.parse_string_exn "(a (b (c (d 1))))" in
+  (* An extra z at the end, so it's not a top level (key value) pair. *)
+  let sexp2 = Parsexp.Single.parse_string_exn "(a (b (c (d 1))) z)" in
+  let programs =
+    [ "a"
+    ; "> a"
+    ; "b"
+    ; "c"
+    ; "d"
+    ; "a b"
+    ; "a > b"
+    ; "a c"
+    ; "a > c"
+    ; "b d"
+    ; "a b c d"
+    ; "a > b > c > d"
+    ]
+  in
+  print_endline (format_program_outputs sexp1 programs);
+  [%expect
+    {|
+    a             -> [ (b(c(d 1))) ]
+    > a           -> [  ]
+    b             -> [ (c(d 1)) ]
+    c             -> [ (d 1) ]
+    d             -> [ 1 ]
+    a b           -> [ (c(d 1)) ]
+    a > b         -> [  ]
+    a c           -> [ (d 1) ]
+    a > c         -> [ (d 1) ]
+    b d           -> [ 1 ]
+    a b c d       -> [ 1 ]
+    a > b > c > d -> [  ] |}];
+  (* Programs including an "a" don't select anything anymore. *)
+  print_endline (format_program_outputs sexp2 programs);
+  [%expect
+    {|
+    a             -> [  ]
+    > a           -> [  ]
+    b             -> [ (c(d 1)) ]
+    c             -> [ (d 1) ]
+    d             -> [ 1 ]
+    a b           -> [  ]
+    a > b         -> [  ]
+    a c           -> [  ]
+    a > c         -> [  ]
+    b d           -> [ 1 ]
+    a b c d       -> [  ]
+    a > b > c > d -> [  ] |}]
+;;

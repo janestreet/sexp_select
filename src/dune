@@ -1,2 +1,2 @@
-(library (name sexp_select) (public_name sexp_select) (modules sexp_select)
- (libraries base) (preprocess (pps ppx_jane)))
+(library (name sexp_select) (public_name sexp_select)
+ (libraries base core_kernel.nonempty_list) (preprocess (pps ppx_jane)))
