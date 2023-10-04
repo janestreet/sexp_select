@@ -57,6 +57,48 @@ let%expect_test "select" =
     wizzle > *           -> [ a; b; c; ((one z)(two y)); chizzle ] |}]
 ;;
 
+let%expect_test "select_single_exn" =
+  let sexp =
+    Parsexp.Single.parse_string_exn
+      {|
+    ((foo bar)
+     (baz (
+       (sausage banana)
+       (fred    george)
+       (wizzle (
+         (one   a)
+         (two   b)
+         (three c)))))
+     (wizzle fizzle)
+     (wizzle (
+       (grizzle (
+         (one z)
+         (two y)))
+       (drizzle chizzle)))
+     (fred percy))
+  |}
+  in
+  let bad_programs = [ "one"; "cowabunga" ] in
+  let good_programs = [ "foo" ] in
+  let test program =
+    print_s [%message (program : string)];
+    let sexp = Sexp_select.select_single_exn program sexp in
+    print_s [%message (sexp : Sexp.t)]
+  in
+  List.iter good_programs ~f:test;
+  [%expect {|
+    (program foo)
+    (sexp bar) |}];
+  List.iter bad_programs ~f:(fun program ->
+    Expect_test_helpers_base.require_does_raise [%here] (fun () -> test program));
+  [%expect
+    {|
+    (program one)
+    "Found multiple matches."
+    (program cowabunga)
+    "Found no matches." |}]
+;;
+
 let%expect_test "weird edge cases" =
   let sexp1 = Parsexp.Single.parse_string_exn "(a (b (c (d 1))))" in
   (* An extra z at the end, so it's not a top level (key value) pair. *)

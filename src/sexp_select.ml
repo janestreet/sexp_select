@@ -37,7 +37,12 @@ let select program_string sexp =
   select_fn sexp
 ;;
 
-let select_single_exn label sexp = select label sexp |> List.hd_exn
+let select_single_exn label sexp =
+  match select label sexp with
+  | [ single ] -> single
+  | [] -> raise_s [%message "Found no matches."]
+  | _ :: _ :: _ -> raise_s [%message "Found multiple matches."]
+;;
 
 module Filter = struct
   let rec filter (sexp : Sexp.t) (actions : Program.Action.t Nonempty_list.t) =
