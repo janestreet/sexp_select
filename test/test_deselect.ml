@@ -87,7 +87,8 @@ let%expect_test "deselect" =
     .wizzle.grizzle.one z
     .wizzle.grizzle.two y
     .wizzle.drizzle     chizzle
-    .fred               percy |}];
+    .fred               percy
+    |}];
   Core.print_endline (to_string_diffable test_sexp);
   let original_sexp = [%expect.output] in
   List.iter example_programs ~f:(fun program ->
@@ -163,7 +164,8 @@ let%expect_test "deselect" =
     -|.wizzle.grizzle.one z
     -|.wizzle.grizzle.two y
     -|.wizzle.drizzle     chizzle
-    +|.wizzle      fizzle |}]
+    +|.wizzle      fizzle
+    |}]
 ;;
 
 let%expect_test "unexpected behavior" =
@@ -221,5 +223,6 @@ let%expect_test "unexpected behavior" =
     (a (b (c)))
 
     deselect "a > b > c > d" ->
-    (a (b (c (d 1)))) |}]
+    (a (b (c (d 1))))
+    |}]
 ;;

@@ -54,7 +54,8 @@ let%expect_test "select" =
                               ((grizzle((one z)(two y)))(drizzle chizzle)) ]
     > wizzle             -> [ fizzle;
                               ((grizzle((one z)(two y)))(drizzle chizzle)) ]
-    wizzle > *           -> [ a; b; c; ((one z)(two y)); chizzle ] |}]
+    wizzle > *           -> [ a; b; c; ((one z)(two y)); chizzle ]
+    |}]
 ;;
 
 let%expect_test "select_single_exn" =
@@ -88,7 +89,8 @@ let%expect_test "select_single_exn" =
   List.iter good_programs ~f:test;
   [%expect {|
     (program foo)
-    (sexp bar) |}];
+    (sexp bar)
+    |}];
   List.iter bad_programs ~f:(fun program ->
     Expect_test_helpers_base.require_does_raise [%here] (fun () -> test program));
   [%expect
@@ -96,7 +98,8 @@ let%expect_test "select_single_exn" =
     (program one)
     "Found multiple matches."
     (program cowabunga)
-    "Found no matches." |}]
+    "Found no matches."
+    |}]
 ;;
 
 let%expect_test "weird edge cases" =
@@ -132,7 +135,8 @@ let%expect_test "weird edge cases" =
     a > c         -> [ (d 1) ]
     b d           -> [ 1 ]
     a b c d       -> [ 1 ]
-    a > b > c > d -> [  ] |}];
+    a > b > c > d -> [  ]
+    |}];
   (* Programs including an "a" don't select anything anymore. *)
   print_endline (format_program_outputs sexp2 programs);
   [%expect
@@ -148,5 +152,6 @@ let%expect_test "weird edge cases" =
     a > c         -> [  ]
     b d           -> [ 1 ]
     a b c d       -> [  ]
-    a > b > c > d -> [  ] |}]
+    a > b > c > d -> [  ]
+    |}]
 ;;

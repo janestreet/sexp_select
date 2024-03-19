@@ -16,8 +16,7 @@ let%expect_test {|A pair of quotes (old behaviour of "\"\"")|} =
 
 let%expect_test "atoms can contain spaces" =
   print_parsed "\"Hello World\"";
-  [%expect {|
-    ((descendants (string "Hello World"))) |}]
+  [%expect {| ((descendants (string "Hello World"))) |}]
 ;;
 
 let%expect_test "Single empty string" =
@@ -39,14 +38,16 @@ let%expect_test "descendants" =
   print_parsed "baz fred";
   [%expect {|
     ((descendants (string baz))
-     (descendants (string fred))) |}]
+     (descendants (string fred)))
+    |}]
 ;;
 
 let%expect_test "direct children" =
   print_parsed "wizzle > two";
   [%expect {|
     ((descendants (string wizzle))
-     (children    (string two))) |}]
+     (children    (string two)))
+    |}]
 ;;
 
 let%expect_test "star operator" =
@@ -58,11 +59,10 @@ let%expect_test "match one of many" =
   print_parsed "( a b )";
   let output = [%expect.output] in
   print_endline output;
-  [%expect {|
-    ((descendants (one_of (a b)))) |}];
+  [%expect {| ((descendants (one_of (a b)))) |}];
   print_parsed "(a b)";
   Expect_test_patdiff.print_patdiff output [%expect.output];
-  [%expect {||}]
+  [%expect {| |}]
 ;;
 
 let%expect_test "match one of many direct children" =
@@ -81,10 +81,11 @@ let%expect_test "complex program" =
      (children    (one_of (e f g)))
      (descendants (string h))
      (descendants (string i))
-     (descendants (one_of (1 a)))) |}];
+     (descendants (one_of (1 a))))
+    |}];
   print_parsed "a(b c d)>(e f g)h i(a 1)";
   Expect_test_patdiff.print_patdiff output [%expect.output];
-  [%expect {||}]
+  [%expect {| |}]
 ;;
 
 let%expect_test "match one of many direct children" =
@@ -103,7 +104,8 @@ let%expect_test "Trailing >" =
   print_parsed "foo >";
   [%expect {|
     ((descendants (string foo))
-     (descendants (string >))) |}]
+     (descendants (string >)))
+    |}]
 ;;
 
 let%expect_test "Adjacent >" =
@@ -113,7 +115,8 @@ let%expect_test "Adjacent >" =
     {|
     ((descendants (string foo))
      (children    (string >))
-     (descendants (string bar))) |}]
+     (descendants (string bar)))
+    |}]
 ;;
 
 let%expect_test "*/> inside () are not special" =
@@ -133,7 +136,8 @@ let%expect_test "Trailing >" =
   print_parsed "foo >";
   [%expect {|
     ((descendants (string foo))
-     (descendants (string >))) |}]
+     (descendants (string >)))
+    |}]
 ;;
 
 let%expect_test "Adjacent >" =
@@ -143,12 +147,12 @@ let%expect_test "Adjacent >" =
     {|
     ((descendants (string foo))
      (children    (string >))
-     (descendants (string bar))) |}]
+     (descendants (string bar)))
+    |}]
 ;;
 
 let%expect_test "*/> inside () are not special" =
   (* This definitely isn't going to do what you expect it to. *)
   print_parsed "foo > ( a > b > * )";
-  [%expect {|
-    ((descendants (string foo)) (children (one_of (* > a b)))) |}]
+  [%expect {| ((descendants (string foo)) (children (one_of (* > a b)))) |}]
 ;;
