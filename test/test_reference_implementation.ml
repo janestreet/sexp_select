@@ -49,7 +49,6 @@ let%expect_test "select/deselect reference implementations" =
     if not (String.equal output1 output2)
     then (
       print_cr
-        [%here]
         [%message "discrepancy" (program : string) (output1 : string) (output2 : string)];
       printf "%s [%s] vs [ref_%s]\n" program f f;
       print_patdiff ~context:0 ~location_style:None output1 output2;

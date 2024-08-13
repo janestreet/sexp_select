@@ -87,12 +87,13 @@ let%expect_test "select_single_exn" =
     print_s [%message (sexp : Sexp.t)]
   in
   List.iter good_programs ~f:test;
-  [%expect {|
+  [%expect
+    {|
     (program foo)
     (sexp bar)
     |}];
   List.iter bad_programs ~f:(fun program ->
-    Expect_test_helpers_base.require_does_raise [%here] (fun () -> test program));
+    Expect_test_helpers_base.require_does_raise (fun () -> test program));
   [%expect
     {|
     (program one)

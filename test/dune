@@ -2,6 +2,6 @@
  (name sexp_select_test)
  (libraries core sexp_select
    expect_test_helpers_core.expect_test_helpers_base
-   patdiff.expect_test_patdiff)
+   patdiff.expect_test_patdiff parsexp)
  (preprocess
   (pps ppx_jane)))

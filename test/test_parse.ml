@@ -36,7 +36,8 @@ let%expect_test "foo" =
 
 let%expect_test "descendants" =
   print_parsed "baz fred";
-  [%expect {|
+  [%expect
+    {|
     ((descendants (string baz))
      (descendants (string fred)))
     |}]
@@ -44,7 +45,8 @@ let%expect_test "descendants" =
 
 let%expect_test "direct children" =
   print_parsed "wizzle > two";
-  [%expect {|
+  [%expect
+    {|
     ((descendants (string wizzle))
      (children    (string two)))
     |}]
@@ -102,7 +104,8 @@ let%expect_test "Leading >" =
 let%expect_test "Trailing >" =
   (* Should maybe be a parse error? *)
   print_parsed "foo >";
-  [%expect {|
+  [%expect
+    {|
     ((descendants (string foo))
      (descendants (string >)))
     |}]
@@ -134,7 +137,8 @@ let%expect_test "Leading >" =
 
 let%expect_test "Trailing >" =
   print_parsed "foo >";
-  [%expect {|
+  [%expect
+    {|
     ((descendants (string foo))
      (descendants (string >)))
     |}]

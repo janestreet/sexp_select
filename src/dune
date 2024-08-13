@@ -1,6 +1,6 @@
 (library
  (name sexp_select)
  (public_name sexp_select)
- (libraries base core_kernel.nonempty_list)
+ (libraries base core_kernel.nonempty_list parsexp core_kernel.reversed_list)
  (preprocess
   (pps ppx_jane)))
