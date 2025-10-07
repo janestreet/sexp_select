@@ -1,6 +1,9 @@
+@@ portable
+
 open! Base
 
-(** sexp select "programs" are themselves formed by a series of sexps.
+(** {v
+ sexp select "programs" are themselves formed by a series of sexps.
 
     Individual atoms represent fields that should be matched, with
     a series of atoms indicating matching nested values.
@@ -20,6 +23,6 @@ open! Base
     foo > bar       : matches a "bar" that's an immediate child of a "foo"
     foo > (bar baz) : matches a "bar" or "baz" that's an immediate child of a "foo"
     bar > *         : matches all immediate children of a "bar"
-*)
+    v} *)
 
 val parse : string -> Program.t

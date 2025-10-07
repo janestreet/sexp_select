@@ -1,3 +1,5 @@
+@@ portable
+
 open! Base
 
 val select : string -> Sexp.t -> Sexp.t list
@@ -11,8 +13,8 @@ val select_staged : string -> (Sexp.t -> Sexp.t list) Staged.t
 val select_single_exn : string -> Sexp.t -> Sexp.t
 
 (** run a list of programs on an input sexp and nicely format the programs and their
-    corresponding outputs when run on the given sexp, for use in -help output and
-    expect tests. *)
+    corresponding outputs when run on the given sexp, for use in -help output and expect
+    tests. *)
 val format_program_outputs : Sexp.t -> string list -> string
 
 (** invert the behavior of [select]; drop the fields matching the selection expression. *)
@@ -27,8 +29,7 @@ val deselect_staged : string -> (Sexp.t -> Sexp.t option) Staged.t
 
     We don't use these as the actual implementations because they allocate more more than
     the standalone versions (especially for [select]) and we don't want to always pay for
-    that unnecessary overhead.
-*)
+    that unnecessary overhead. *)
 module For_testing : sig
   module Program = Program
   module Parse = Parse
