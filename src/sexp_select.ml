@@ -57,10 +57,10 @@ module Filter = struct
         | `children action -> false, action
       in
       (match l with
-       (* This branch is to handle the weird behavior of select where the program
-          "a" will match the top-level "(a 1)" and return 1, but "> a" won't.
-          In that case, [filter] won't return anything; the entire sexp match the
-          select program, so we'll return [None]. *)
+       (* This branch is to handle the weird behavior of select where the program "a" will
+          match the top-level "(a 1)" and return 1, but "> a" won't. In that case,
+          [filter] won't return anything; the entire sexp match the select program, so
+          we'll return [None]. *)
        | [ (Atom k as key); value ]
          when Program.Action.matches k curr_action && match_at_lower_levels_if_no_match ->
          (match remaining_actions with
@@ -111,8 +111,8 @@ end
                           and_another_output ]
    v}
 
-   where the left side is the programs passed in, and the right side is the outputs
-   of running [select] on the input sexp.
+   where the left side is the programs passed in, and the right side is the outputs of
+   running [select] on the input sexp.
 *)
 let format_program_outputs sexp programs =
   let max_program_width =
@@ -167,11 +167,10 @@ module For_testing = struct
         | `children action -> false, action
       in
       (match l with
-       (* This branch is to handle the weird behavior of select where the program
-          "a" will match the top-level "(a 1)" and return 1, but "> a" won't.
-          In that case, if this is the end of the program, we'll select the value
-          and nothing will remain. If there's more to the program then we'll continue
-          selecting the value. *)
+       (* This branch is to handle the weird behavior of select where the program "a" will
+          match the top-level "(a 1)" and return 1, but "> a" won't. In that case, if this
+          is the end of the program, we'll select the value and nothing will remain. If
+          there's more to the program then we'll continue selecting the value. *)
        | [ (Atom k as key); value ]
          when Program.Action.matches k curr_action && match_at_lower_levels_if_no_match ->
          (match remaining_actions with
