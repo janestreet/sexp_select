@@ -18,8 +18,8 @@ let parse_ident tokens =
 ;;
 
 let parse_one = function
-  (* This actually needn't return option, since we always have a valid parse. But we
-     leave it as-is for future language extensions that might be more restrictive. *)
+  (* This actually needn't return option, since we always have a valid parse. But we leave
+     it as-is for future language extensions that might be more restrictive. *)
   | [] -> None
   | Sexp.Atom ">" :: unparsed_ident :: rest ->
     let ident = parse_ident unparsed_ident in
