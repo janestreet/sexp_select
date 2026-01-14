@@ -12,6 +12,7 @@ build: [
 depends: [
   "ocaml" {>= "5.1.0"}
   "base"
+  "core"
   "core_kernel"
   "parsexp"
   "ppx_jane"
