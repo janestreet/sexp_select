@@ -1,6 +1,6 @@
 (library
  (name sexp_select)
  (public_name sexp_select)
- (libraries base core parsexp core_kernel.reversed_list)
+ (libraries base parsexp core_kernel.reversed_list)
  (preprocess
-  (pps ppx_jane)))
+  (pps ppx_jane -compare-require-explicit-locality)))

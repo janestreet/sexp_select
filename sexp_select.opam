@@ -6,13 +6,13 @@ bug-reports: "https://github.com/janestreet/sexp_select/issues"
 dev-repo: "git+https://github.com/janestreet/sexp_select.git"
 doc: "https://ocaml.janestreet.com/ocaml-core/latest/doc/sexp_select/index.html"
 license: "MIT"
+x-maintenance-intent: ["(latest)"]
 build: [
   ["dune" "build" "-p" name "-j" jobs]
 ]
 depends: [
   "ocaml" {>= "5.1.0"}
   "base"
-  "core"
   "core_kernel"
   "parsexp"
   "ppx_jane"
