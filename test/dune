@@ -3,4 +3,4 @@
  (libraries core expect_test_helpers_base patdiff.expect_test_patdiff parsexp
    sexp_select)
  (preprocess
-  (pps ppx_jane)))
+  (pps ppx_jane -compare-require-explicit-locality)))
